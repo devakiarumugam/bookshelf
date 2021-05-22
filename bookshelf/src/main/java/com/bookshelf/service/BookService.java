@@ -67,6 +67,10 @@ public class BookService {
                   book.setAuthor(bookRequest.getAuthor());
                   book.setTitle(bookRequest.getTitle());
                   book = bookRepository.save(book);
+                  Optional.of(bookRequest.getTags())
+                      .ifPresent(
+                          tags ->
+                              tags.stream().forEach(tag -> tag.setBookIsbn(bookRequest.getIsbn())));
                   saveBookTags(book.getIsbn(), bookRequest.getTags(), book);
                   return book;
                 });
